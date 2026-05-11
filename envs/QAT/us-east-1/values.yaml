@@ -1,0 +1,26 @@
+image:
+  repository: nginx          # demo: replace with real image
+  tag: "latest"              # Kargo will update this field
+
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+ingress:
+  enabled: false
+
+# Plain env vars — no ESO for demo
+externalSecret:
+  enabled: false
+
+env:
+  APP_ENV: dev
+  REGION: us-east-1
+  LOG_LEVEL: debug
+  DATABASE_HOST: db.dev.us-east-1.internal

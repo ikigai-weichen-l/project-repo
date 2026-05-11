@@ -2,17 +2,18 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../../base
+  - github.com/YOUR_ORG/central-helm-repo//base?ref=main
+
+images:
+  - name: ealen/echo-server
+    newTag: latest    # Kargo updates this field
 
 configMapGenerator:
   - name: my-app-config
     behavior: merge
     literals:
-      - APP_ENV=dev
+      - APP_ENV=cit
       - REGION=us-east-1
       - LOG_LEVEL=debug
     options:
       disableNameSuffixHash: true
-
-patches:
-  - path: externalsecret-patch.yaml

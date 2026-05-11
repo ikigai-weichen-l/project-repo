@@ -1,0 +1,54 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: qat
+  namespace: kargo
+spec:
+  # QAT subscribes to DEV stage — only promotes versions that passed DEV
+  subscriptions:
+    stage: dev
+
+  promotionTemplate:
+    spec:
+      steps:
+        # Step 1: Clone project repo
+        - uses: git-clone
+          config:
+            repoURL: https://github.com/YOUR_ORG/project-repo
+            checkout:
+              - branch: main
+                path: ./repo
+
+        # Step 2: Write new image tag to both QAT region values files
+        - uses: yaml-update
+          config:
+            path: ./repo/envs/qat/us-east-1/values.yaml
+            updates:
+              - key: image.tag
+                value: ${{ imageFrom "mendhak/http-https-echo" | .Tag }}
+
+        - uses: yaml-update
+          config:
+            path: ./repo/envs/qat/ap-southeast-1/values.yaml
+            updates:
+              - key: image.tag
+                value: ${{ imageFrom "mendhak/http-https-echo" | .Tag }}
+
+        # Step 3: Commit and push — this is the audit-trail git record
+        - uses: git-commit
+          config:
+            path: ./repo
+            message: "chore(qat): promote my-app to ${{ imageFrom \"mendhak/http-https-echo\" | .Tag }}"
+
+        - uses: git-push
+          config:
+            path: ./repo
+
+        # Step 4: Trigger ArgoCD sync after git push
+        - uses: argocd-update
+          config:
+            apps:
+              - name: my-app-qat-us-east-1
+                namespace: argocd
+              - name: my-app-qat-ap-southeast-1
+                namespace: argocd

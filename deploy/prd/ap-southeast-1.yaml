@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app-prd-ap-southeast-1
+  namespace: argocd
+  annotations:
+    kargo.akuity.io/authorized-stage: my-app:prd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/YOUR_ORG/central-helm-repo
+      targetRevision: main
+      path: charts/app-template
+      helm:
+        valueFiles:
+          - $values/envs/prd/ap-southeast-1/values.yaml
+
+    - repoURL: https://github.com/YOUR_ORG/project-repo
+      targetRevision: main
+      ref: values
+
+  destination:
+    server: https://k8s-prd-ap-southeast-1.example.com
+    namespace: my-app-prd
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

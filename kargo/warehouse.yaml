@@ -1,0 +1,18 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: my-app
+  namespace: kargo
+spec:
+  subscriptions:
+    # Watch image registry for new tags
+    - image:
+        repoURL: mendhak/http-https-echo
+        # DEV tracks any tag (including branch builds); QAT/PRD filter in Stage subscriptions
+        semverConstraint: ">=0.0.0-0"
+        discoveryLimit: 10
+
+    # Watch project repo for changes (triggers freight on new commits to main)
+    - git:
+        repoURL: https://github.com/YOUR_ORG/project-repo
+        branch: main

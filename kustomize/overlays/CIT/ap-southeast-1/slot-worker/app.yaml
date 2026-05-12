@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: my-app-config
+  name: my-app-slot-worker-config
 data:
   APP_NAME: slot-worker
   QUEUE_URL: https://queue.cit.ap-southeast-1.internal

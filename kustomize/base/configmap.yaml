@@ -1,11 +1,6 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: my-app-config
+  name: my-app-shared-config
 data:
-  APP_NAME: placeholder
-  ENV: "staging"
-  REGION: ""
-  LOG_LEVEL: info
-  DB_HOST: "asdasds"
   PORT: "8080"

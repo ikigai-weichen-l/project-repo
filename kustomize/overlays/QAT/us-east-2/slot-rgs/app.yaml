@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: my-app-config
+  name: my-app-slot-rgs-config
 data:
   APP_NAME: slot-rgs
   APP_ENDPOINT: https://rgs.qat.us-east-2.internal

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: my-app-config
+  name: my-app-shared-config
 data:
   ENV: CIT
   REGION: ap-southeast-1

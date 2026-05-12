@@ -8,3 +8,4 @@ data:
   REGION: ""
   LOG_LEVEL: info
   DB_HOST: "asdasds"
+  PORT: "8080"
